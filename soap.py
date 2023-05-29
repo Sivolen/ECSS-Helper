@@ -1,3 +1,4 @@
+#!venv/bin/python3
 import re
 
 import requests
@@ -107,6 +108,24 @@ class EcssHelper:
         print(data)
         return data
 
+    def change_sip_params(self, user_data: dict[str, str | int | list[str]]):
+        URL_SIP_SET: str = (
+            f"https://{self.api_url}:{self.api_port}/commands/sip_user_set"
+        )
+        XML_SIP_SET: str = (
+            '<?xml version="1.0" encoding="UTF-8"?>'
+            '<in xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '
+            'xsi:noNamespaceSchemaLocation="sip_user_set.xsd">'
+            f'<sip group="{user_data.get("group")}" '
+            f'id="{user_data.get("number")}@{user_data.get("domain")}" '
+            f'domain="{user_data.get("domain")}">'
+            f'<my_from value="{user_data.get("my_from")}"/>'
+            "</sip>"
+            "</in>"
+        )
+        response = self.__post_data(url=URL_SIP_SET, request=XML_SIP_SET)
+        return True if response.status_code == 201 else False
+
     def create_account(self, user_data: dict[str, str | int | list[str]]) -> bool:
         if not self.check_number(user_data.get("number")):
             return False
@@ -117,7 +136,7 @@ class EcssHelper:
             f'<in xmlns:xs="http://www.w3.org/2001/XMLSchema-instance">'
             "<request "
             f'domain="{user_data.get("domain")}" '
-            f'context="{user_data.get("contex")}" '
+            f'context="{user_data.get("context")}" '
             f'group="{user_data.get("group")}" '
             f'iface="{user_data.get("number")}@{user_data.get("domain")}" '
             f'address="alias-as-user" '
@@ -448,40 +467,46 @@ def main():
 
 
 def main1():
-    test_data = {
-        "domain": "ecss.rt.local",
-        "context": "test_name",
-        "group": "123333",
-        "number": "65173",
-        "password": "65173",
-        "display_name": "Gridnev Test number",
-        "encoding": "utf8",
-        "license_list": [
-            "ECSS-ADV",
-            "ECSS-ADV+",
-            "ECSS-BAS",
-            "ECSS-BAS+",
-            "ECSS-GEN",
-        ],
-        "profile": "phone_profile_01",
-    }
-    client = EcssHelper(
-        api_url=ECSS_API_URL,
-        api_port=ECSS_API_PORT,
-        ecss_username=USERNAME,
-        ecss_password=PASSWORD,
-    )
-    print(client.create_account(user_data=test_data))
-    client = EcssHelper(
-        api_url=ECSS_API_URL,
-        api_port=ECSS_API_PORT,
-        ecss_username=USERNAME,
-        ecss_password=PASSWORD,
-    )
-    client.change_displayName(user_data=test_data)
-    client.change_encoding(user_data=test_data)
-    client.activate_license(user_data=test_data)
-    client.activate_profile(user_data=test_data)
+    with open("users.txt", "r") as f:
+        for line in f:
+            line = line.split(",")
+            test_data = {
+                "domain": "ecss.rt.local",
+                "my_from": "10.40.1.23",  # Need use domain name
+                "context": "test_name",
+                "group": "123333",
+                "number": f"{line[0].strip()}",
+                "password": f"{line[1].strip()}",
+                "display_name": f"{line[2].strip()}",
+                "encoding": "utf8",
+                "license_list": [
+                    "ECSS-ADV",
+                    "ECSS-ADV+",
+                    "ECSS-BAS",
+                    "ECSS-BAS+",
+                    "ECSS-GEN",
+                ],
+                "profile": "phone_profile_01",
+            }
+            print(test_data)
+            client = EcssHelper(
+                api_url=ECSS_API_URL,
+                api_port=ECSS_API_PORT,
+                ecss_username=USERNAME,
+                ecss_password=PASSWORD,
+            )
+            print(client.create_account(user_data=test_data))
+            client = EcssHelper(
+                api_url=ECSS_API_URL,
+                api_port=ECSS_API_PORT,
+                ecss_username=USERNAME,
+                ecss_password=PASSWORD,
+            )
+            client.change_sip_params(user_data=test_data)
+            client.change_displayName(user_data=test_data)
+            client.change_encoding(user_data=test_data)
+            client.activate_license(user_data=test_data)
+            client.activate_profile(user_data=test_data)
 
 
 if __name__ == "__main__":
