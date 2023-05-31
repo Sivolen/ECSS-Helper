@@ -1,9 +1,9 @@
 {% extends 'base.html' %} {% block title %}Add new SIP Users{% endblock %} {% block body %}
 <div class="col-md-12 col-lg-8 container">
     <h4 class="mb-3">Choose file with sip users data</h4>
-    <form method="post" class="needs-validation" novalidate>
+    <form method="post" class="needs-validation" enctype="multipart/form-data" novalidate>
             <div class="input-group mb-6">
-                <input class="form-control" type="file" id="file" name="file" placeholder="Users file"  autocomplete="off"/>
+                <input class="form-control" type="file" id="file" name="file" placeholder="Users file"  multiple autocomplete="off"/>
                 <button class="btn btn-outline-primary" type="submit" name="submit-btn" id="search-btn_secondary" value="run">Запустить</button>
                 <div class="valid-feedback">
                     Отлично!
@@ -23,47 +23,4 @@
         </div>
     </form>
 </div>
-<script>
-    $(":input[name='search_input']").change(function (event) {
-        var s = $(this).val();
-        if (s.match("(^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$)")) {
-            $(":input[name='search_input']").attr("class", "form-control is-valid");
-            $("#search-btn_secondary")[0].disabled = false;
-        } else if ($(this).val() == "") {
-            $(":input[name='search_input']").attr("class", "form-control");
-            $("#search-btn_secondary")[0].disabled = true;
-        } else {
-            $(":input[name='search_input']").attr("class", "form-control is-invalid");
-            $("#search-btn_secondary")[0].disabled = true;
-        }
-    });
-
-    $(":input[name='search_input']").keyup(function (event) {
-        var s = $(this).val();
-        if (s.match("(^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$)")) {
-            $(":input[name='search_input']").attr("class", "form-control is-valid");
-            $("#search-btn_secondary")[0].disabled = false;
-        } else if ($(this).val() == "") {
-            $(":input[name='search_input']").attr("class", "form-control");
-            $("#search-btn_secondary")[0].disabled = true;
-        } else {
-            $(":input[name='search_input']").attr("class", "form-control is-invalid");
-            $("#search-btn_secondary")[0].disabled = true;
-        }
-    });
-
-    $(":input[name='search_input']").click(function (event) {
-        var s = $(this).val();
-        if (s.match("(^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$)")) {
-            $(":input[name='search_input']").attr("class", "form-control is-valid");
-            $("#search-btn_secondary")[0].disabled = false;
-        } else if ($(this).val() == "") {
-            $(":input[name='search_input']").attr("class", "form-control");
-            $("#search-btn_secondary")[0].disabled = true;
-        } else {
-            $(":input[name='search_input']").attr("input", "form-control is-invalid");
-            $("#search-btn_secondary")[0].disabled = true;
-        }
-    });
-</script>
 {% endblock %}

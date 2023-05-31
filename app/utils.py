@@ -52,8 +52,8 @@ def create_sip_user(
 
 
 def process(file):
-    with open(file, "r") as f:
-        for line in f:
+    for line in file.split('\n'):
+        if len(line) > 0:
             line = line.split(",")
             create_sip_user(
                 number=line[0].strip(),
