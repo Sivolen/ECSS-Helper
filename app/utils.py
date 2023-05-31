@@ -51,8 +51,8 @@ def create_sip_user(
     client.activate_profile(user_data=server_data)
 
 
-def process(file):
-    for line in file.split('\n'):
+def process(file: list[str]):
+    for line in file:
         if len(line) > 0:
             line = line.split(",")
             create_sip_user(

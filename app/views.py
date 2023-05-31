@@ -18,7 +18,7 @@ def index():
     if request.method == "GET":
         return render_template("index.html", navigation=navigation)
     if request.method == "POST" and request.files.get("file"):
-        file = request.files["file"].stream.read().decode('utf-8')
+        file = request.files["file"].stream.read().decode('utf-8').split('\n')
         process(file=file)
         return render_template("index.html", navigation=navigation)
     return render_template("index.html", navigation=navigation)
