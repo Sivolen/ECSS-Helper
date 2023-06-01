@@ -79,13 +79,13 @@ class EcssHelper:
 
     @staticmethod
     def __check_password_security(password: str) -> bool:
-        pattern = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%])[a-zA-Z\d!@#$%^&*()_+}{:?><]{8,}$"
+        pattern = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%_])[a-zA-Z\d!@#$%^&*()_+}{:?><]{8,}$"
         return True if re.findall(pattern, password) else False
 
     @staticmethod
     def __check_display_name(display_name: str) -> bool:
         # pattern: str = r"^\D{,7}\s\D{,10}\s[A-Z]\.[A-Z]\.$"
-        pattern: str = r"^[A-Z]{1,7}\s[A-Z]\D{1,10}(\s[A-Z].[A-Z].$|)$"
+        pattern: str = r"^[a-zA-Z]{1,7}\s[A-Z]\D{1,15}(\s[A-Z].[A-Z].$|)$"
         return False if not re.findall(pattern, display_name) else True
 
     @staticmethod
@@ -140,6 +140,8 @@ class EcssHelper:
             "</in>"
         )
         response = self.__post_data(url=URL_DECLARE, request=XML_CREATE_USER)
+        print(response.content)
+
         return False if response.status_code not in STATUS_CODES else True
 
     def process(

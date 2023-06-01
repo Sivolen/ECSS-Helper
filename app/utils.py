@@ -52,7 +52,9 @@ def create_sip_user(
 
 
 def process(file: list[str]):
+    print(file)
     for line in file:
+        print(line)
         if len(line) > 0:
             line = line.split(",")
             create_sip_user(
