@@ -17,10 +17,42 @@
           <div class="card-header">File example</div>
             <div class="card-body">
                 <h5 class="card-title">number,password,name</h5>
-                <p class="card-text">67173,67173,Test T.T.</p>
-                <p class="card-text">67174,67174,Test1 T.T.</p>
+                <p class="card-text">67173,@testpassw0rd,Test T.T.</p>
+                <p class="card-text">67174,_testpassw0rd,Test1 T.T.</p>
             </div>
         </div>
     </form>
+    {% if result %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Number</th>
+                <th scope="col">Creating</th>
+                <th scope="col">My_From</th>
+                <th scope="col">Display Name</th>
+                <th scope="col">Encoding</th>
+                <th scope="col">License</th>
+                <th scope="col">Profile</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for i in result %}
+        <tr>
+            <th scope="row">{{ i }}</th>
+            <td>{{ result[i]["creating_status"] }}</td>
+            <td>{{ result[i]["change_my_from"] }}</td>
+            <td>{{ result[i]["change_name"] }}</td>
+            <td>{{ result[i]["change_encoding"] }}</td>
+            <td>
+                {% for j in result[i]["activate_license"] %}
+                {{ j }}: {{ result[i]["activate_license"][j] }}<br>
+                {% endfor %}
+            </td>
+            <td>{{ result[i]["activate_profile"] }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
 </div>
 {% endblock %}

@@ -97,7 +97,6 @@ class EcssHelper:
         if not self.__get_connection():
             self.__reconnect()
         data = self.pusher.post(url, request)
-        print(data)
         return data
 
     def change_sip_params(self, user_data: dict[str, str | int | list[str]]):
@@ -140,8 +139,6 @@ class EcssHelper:
             "</in>"
         )
         response = self.__post_data(url=URL_DECLARE, request=XML_CREATE_USER)
-        print(response.content)
-
         return False if response.status_code not in STATUS_CODES else True
 
     def process(
@@ -210,7 +207,8 @@ class EcssHelper:
             return
         return xmltodict.parse(data.content)["out"]["users"]["user"]["@id"]
 
-    def activate_license(self, user_data: dict[str, str | int | list[str]]):
+    def activate_license(self, user_data: dict[str, str | int | list[str]]) -> dict[str, str]:
+        activate_dict: dict = {}
         URL_SS: str = f"https://{self.api_url}:{self.api_port}/commands/ss_licence_package_allocate"
         for ecss_license in user_data["license_list"]:
             XML_SS: str = f"""
@@ -221,8 +219,12 @@ class EcssHelper:
                             package="{ecss_license}"/> 
                         </in>
                     """
-            self.__post_data(url=URL_SS, request=XML_SS)
-        return True
+            response = self.__post_data(url=URL_SS, request=XML_SS)
+            result = True if response.status_code in STATUS_CODES else False
+            activate_dict.update(
+                {ecss_license: result}
+            )
+        return activate_dict
 
     def activate_profile(self, user_data: dict[str, str | int | list[str]]):
         URL_PROFILE: str = f"https://{self.api_url}:{self.api_port}/commands/ss_domain_profile_activate"
