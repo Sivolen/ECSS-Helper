@@ -16,6 +16,7 @@ from ecss.utils import process
 @ecss.route("/", methods=["POST", "GET"])
 @check_auth
 def index():
+    session["name"] = "index"
     session["prev_url"] = request.url
     navigation = True
     if request.method == "GET":
@@ -33,6 +34,7 @@ def login():
     Login page
     :return:
     """
+    session["name"] = "login"
     prev_url = session.get("prev_url")
     if "user" not in session or session["user"] == "":
         if request.method == "POST":
