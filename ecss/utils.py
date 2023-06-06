@@ -1,4 +1,4 @@
-from app.soap import EcssHelper
+from ecss.soap import EcssHelper
 from settings import (
     USERNAME,
     PASSWORD,

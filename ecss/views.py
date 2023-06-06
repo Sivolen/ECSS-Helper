@@ -8,12 +8,12 @@ from flask import (
     redirect,
 )
 
-from app import app
-from app.modules.ldap import LDAP_FLASK, check_auth
-from app.utils import process
+from ecss import ecss
+from ecss.modules.ldap import LDAP_FLASK, check_auth
+from ecss.utils import process
 
 
-@app.route("/", methods=["POST", "GET"])
+@ecss.route("/", methods=["POST", "GET"])
 @check_auth
 def index():
     session["prev_url"] = request.url
@@ -27,7 +27,7 @@ def index():
     return render_template("index.html", navigation=navigation)
 
 
-@app.route("/login", methods=["POST", "GET"])
+@ecss.route("/login", methods=["POST", "GET"])
 def login():
     """
     Login page
@@ -51,7 +51,6 @@ def login():
                 return render_template("login.html")
         else:
             return render_template("login.html")
-
     else:
         session["user"] = ""
         flash("You were successfully logged out", "warning")

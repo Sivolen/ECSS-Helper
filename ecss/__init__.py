@@ -17,8 +17,8 @@ __url__ = "https://github.com/Sivolen/"
 # logger = setup_logging(log_level="INFO")
 
 # Init flask app
-app = Flask(__name__)
-app.secret_key = SECRET_KEY
+ecss = Flask(__name__)
+ecss.secret_key = SECRET_KEY
 # app = Flask(__name__)
 # Compress(app)
 # Add config parameters in flask app and chose release
@@ -31,4 +31,4 @@ app.secret_key = SECRET_KEY
 # db.init_app(app)
 
 # import routes
-from app import views
+from ecss import views

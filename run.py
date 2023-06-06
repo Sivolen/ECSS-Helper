@@ -1,6 +1,6 @@
 #!venv/bin/python3
-from app import app
+from ecss import ecss
 
 # Start flask app
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0")
+    ecss.run(debug=True, host="0.0.0.0")
