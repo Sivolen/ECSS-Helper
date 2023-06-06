@@ -2,6 +2,7 @@ from flask import Flask
 
 
 # from app.modules.logger import setup_logging
+from settings import SECRET_KEY
 
 __version__ = "0.1.0"
 __version_date__ = "2023-05-26"
@@ -17,6 +18,7 @@ __url__ = "https://github.com/Sivolen/"
 
 # Init flask app
 app = Flask(__name__)
+app.secret_key = SECRET_KEY
 # app = Flask(__name__)
 # Compress(app)
 # Add config parameters in flask app and chose release

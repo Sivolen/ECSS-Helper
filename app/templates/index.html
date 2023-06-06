@@ -23,7 +23,7 @@
         </div>
     </form>
     {% if result %}
-    <table class="table">
+    <table class="table table-sm table-striped">
         <thead>
             <tr>
                 <th scope="col">Number</th>
@@ -39,7 +39,11 @@
         {% for i in result %}
         <tr>
             <th scope="row">{{ i }}</th>
-            <td>{{ result[i]["creating_status"] }}</td>
+            {% if result[i]["creating_status"] == "true" %}
+                <td>{{ result[i]["creating_status"] }}</td>
+            {% else %}
+            <td class="table-danger">{{ result[i]["creating_status"] }}</td>
+            {% endif %}
             <td>{{ result[i]["change_my_from"] }}</td>
             <td>{{ result[i]["change_name"] }}</td>
             <td>{{ result[i]["change_encoding"] }}</td>

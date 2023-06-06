@@ -71,15 +71,14 @@ def process(file: list[str]):
             )
             results.update(
                 {
-                    line[0].strip():
-                        dict(
-                            creating_status=result["create_user_result"],
-                            change_my_from=result["change_my_from_result"],
-                            change_name=result["change_username_result"],
-                            change_encoding=result["change_encoding_result"],
-                            activate_license=result["activate_license_result"],
-                            activate_profile=result["activate_profile_result"]
-                        )
-                 }
+                    line[0].strip(): dict(
+                        creating_status=result["create_user_result"],
+                        change_my_from=result["change_my_from_result"],
+                        change_name=result["change_username_result"],
+                        change_encoding=result["change_encoding_result"],
+                        activate_license=result["activate_license_result"],
+                        activate_profile=result["activate_profile_result"],
+                    )
+                }
             )
     return results

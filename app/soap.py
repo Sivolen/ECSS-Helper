@@ -207,7 +207,9 @@ class EcssHelper:
             return
         return xmltodict.parse(data.content)["out"]["users"]["user"]["@id"]
 
-    def activate_license(self, user_data: dict[str, str | int | list[str]]) -> dict[str, str]:
+    def activate_license(
+        self, user_data: dict[str, str | int | list[str]]
+    ) -> dict[str, str]:
         activate_dict: dict = {}
         URL_SS: str = f"https://{self.api_url}:{self.api_port}/commands/ss_licence_package_allocate"
         for ecss_license in user_data["license_list"]:
@@ -221,9 +223,7 @@ class EcssHelper:
                     """
             response = self.__post_data(url=URL_SS, request=XML_SS)
             result = True if response.status_code in STATUS_CODES else False
-            activate_dict.update(
-                {ecss_license: result}
-            )
+            activate_dict.update({ecss_license: result})
         return activate_dict
 
     def activate_profile(self, user_data: dict[str, str | int | list[str]]):
