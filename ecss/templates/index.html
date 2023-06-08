@@ -39,7 +39,7 @@
         {% for i in result %}
         <tr>
             <th scope="row">{{ i }}</th>
-            {% if result[i]["creating_status"] == "true" %}
+            {% if result[i]["creating_status"] == "True" %}
                 <td>{{ result[i]["creating_status"] }}</td>
             {% else %}
             <td class="table-danger">{{ result[i]["creating_status"] }}</td>
