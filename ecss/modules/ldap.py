@@ -31,6 +31,7 @@ class LDAP_FLASK:
 # Decorator for check authorizations users
 def check_auth(function):
     def wrapper_function(*args, **kwargs):
+        print(session)
         if "user" not in session or session["user"] == "":
             return redirect(url_for("login"))
             # return render_template('login.html')

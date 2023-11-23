@@ -41,7 +41,6 @@ def login():
             page_email = request.form["email"]
             page_password = request.form["password"]
             ldap_connect = LDAP_FLASK(page_email, page_password)
-
             if ldap_connect.bind():
                 session["user"] = page_email
                 flash("You were successfully logged in", "success")

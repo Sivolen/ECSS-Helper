@@ -52,7 +52,10 @@ class EcssHelper:
     def __get_connection(self):
         """check connection to sip server"""
         URL = f"https://{self.api_url}:{self.api_port}/system/is_active"
-        return True if self.pusher.get(URL).status_code == 200 else False
+        try:
+            return True if self.pusher.get(URL).status_code == 200 else False
+        except:
+            return False
 
     def __reconnect(self):
         """
@@ -84,8 +87,7 @@ class EcssHelper:
 
     @staticmethod
     def __check_display_name(display_name: str) -> bool:
-        # pattern: str = r"^\D{,7}\s\D{,10}\s[A-Z]\.[A-Z]\.$"
-        pattern: str = r"^[А-Яа-яЁёA-Za-z]+\s([А-Яа-яЁёA-Za-z]\.|[A-Za-z]+\s)?[А-Яа-яЁёA-Za-z]\.$"
+        pattern: str = r"^\D{,7}\s\D{,10}\s[A-ZА-ЯЁ]\.[A-ZА-ЯЁ]\.$"
         return False if not re.findall(pattern, display_name) else True
 
     @staticmethod
@@ -96,8 +98,12 @@ class EcssHelper:
     def __post_data(self, url: str, request: str):
         if not self.__get_connection():
             self.__reconnect()
-        data = self.pusher.post(url, request)
-        return data
+        try:
+            data = self.pusher.post(url, request)
+            return data
+        except Exception as send_api_error:
+            print(send_api_error)
+            return 404
 
     def change_sip_params(self, user_data: dict[str, str | int | list[str]]):
         URL_SIP_SET: str = (
@@ -147,6 +153,8 @@ class EcssHelper:
         pass
 
     def change_displayName(self, user_data: dict[str, str | int | list[str]]):
+        if not self.__check_display_name(user_data.get("display_name")):
+            return False
         URL_ALIAS: str = f"https://{self.api_url}:{self.api_port}/commands/alias_set"
         XML_ALIAS: str = (
             '<?xml version="1.0" encoding="UTF-8"?>'
