@@ -92,7 +92,7 @@ class EcssHelper:
 
     @staticmethod
     def __check_number(numbers: str) -> bool:
-        pattern: str = r"^[236][0-9]{4}$"
+        pattern: str = r"^[1236][0-9]{4}$"
         return False if not re.findall(pattern, numbers) else True
 
     def __post_data(self, url: str, request: str):
