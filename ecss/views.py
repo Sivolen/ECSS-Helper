@@ -14,7 +14,7 @@ from ecss.utils import process
 
 
 @ecss.route("/", methods=["POST", "GET"])
-@check_auth
+# @check_auth
 def index():
     session["name"] = "index"
     session["prev_url"] = request.url

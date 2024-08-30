@@ -30,3 +30,5 @@ ENCODING: str = "utf8"
 # Login LDAP
 AD_ADDRESS: str = "10.0.0.1"
 AD_SEARCH_TREE: str = "DC=LOCAL"
+#
+SLEEP_TIMER: int = 1

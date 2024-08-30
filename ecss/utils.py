@@ -1,3 +1,4 @@
+import time
 from ecss.soap import EcssHelper
 from settings import (
     USERNAME,
@@ -11,6 +12,7 @@ from settings import (
     MY_FROM,
     LICENSE_LIST,
     ENCODING,
+    SLEEP_TIMER,
 )
 
 
@@ -61,9 +63,13 @@ def create_sip_user(
 
 def process(file: list[str]):
     results: dict = {}
-    for line in file:
-        if len(line) > 0:
-            line = line.split(",")
+    if len(file) == 0:
+        return results
+    for n, line in enumerate(file, start=1):
+        line = line.split(",")
+        if len(line) < 3:
+            continue
+        else:
             result = create_sip_user(
                 number=line[0].strip(),
                 password=line[1].strip(),
@@ -74,11 +80,14 @@ def process(file: list[str]):
                     line[0].strip(): dict(
                         creating_status=result["create_user_result"],
                         change_my_from=result["change_my_from_result"],
-                        change_name=result["change_username_result"],
+                        change_name=result["change_username_result"]
+                        if result["change_username_result"]
+                        else "UserName is incorrect",
                         change_encoding=result["change_encoding_result"],
                         activate_license=result["activate_license_result"],
                         activate_profile=result["activate_profile_result"],
                     )
                 }
             )
+            time.sleep(SLEEP_TIMER)
     return results

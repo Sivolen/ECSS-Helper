@@ -19,7 +19,7 @@ __url__ = "https://github.com/Sivolen/"
 # Init flask app
 ecss = Flask(__name__)
 ecss.secret_key = SECRET_KEY
-ecss.config['SESSION_COOKIE_SAMESITE'] = "None"
+ecss.config["SESSION_COOKIE_SAMESITE"] = "None"
 ecss.config["SESSION_COOKIE_SECURE"] = True
 # Compress(app)
 # Add config parameters in flask app and chose release
