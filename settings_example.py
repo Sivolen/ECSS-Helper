@@ -25,6 +25,7 @@ DEFAULT_DOMAIN: str = "ecss.local"
 DEFAULT_CONTEXT: str = ""
 DEFAULT_GROUP: str = ""
 DEFAULT_PROFILE: str = ""
+CHANGE_MY_FROM: bool = False
 MY_FROM: str = ""
 ENCODING: str = "utf8"
 # Login LDAP

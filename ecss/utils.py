@@ -9,6 +9,7 @@ from settings import (
     DEFAULT_GROUP,
     DEFAULT_CONTEXT,
     DEFAULT_PROFILE,
+    CHANGE_MY_FROM,
     MY_FROM,
     LICENSE_LIST,
     ENCODING,
@@ -46,7 +47,10 @@ def create_sip_user(
         ecss_username=USERNAME,
         ecss_password=PASSWORD,
     )
-    change_my_from_result = client.change_sip_params(user_data=server_data)
+    if CHANGE_MY_FROM:
+        change_my_from_result = client.change_sip_params(user_data=server_data)
+    else:
+        change_my_from_result = "Change my_from disabled"
     change_username_result = client.change_displayName(user_data=server_data)
     change_encoding_result = client.change_encoding(user_data=server_data)
     activate_license_result = client.activate_license(user_data=server_data)
