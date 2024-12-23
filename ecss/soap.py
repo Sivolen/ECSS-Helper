@@ -99,7 +99,7 @@ class EcssHelper:
         if not self.__get_connection():
             self.__reconnect()
         try:
-            data = self.pusher.post(url, request)
+            data = self.pusher.post(url, request.encode("utf-8"))
             return data
         except Exception as send_api_error:
             print(send_api_error)
