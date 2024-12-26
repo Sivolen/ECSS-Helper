@@ -87,7 +87,8 @@ class EcssHelper:
 
     @staticmethod
     def __check_display_name(display_name: str) -> bool:
-        pattern: str = r"^\D{,7}\s\D{,10}\s[A-ZА-ЯЁ]\.[A-ZА-ЯЁ]\.$"
+        # pattern: str = r"^\D{,7}\s\D{,10}\s[A-ZА-ЯЁ]\.[A-ZА-ЯЁ]\.$"
+        pattern: str = r"^(?:\D{,7}\s)?\D{,10}\s[A-ZА-ЯЁ]\.[A-ZА-ЯЁ]\.$"
         return False if not re.findall(pattern, display_name) else True
 
     @staticmethod
