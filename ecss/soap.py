@@ -94,14 +94,16 @@ class EcssHelper:
         special_characters = "!@#$%_"
 
         # Combine all character sets into one
-        all_characters = lowercase_letters + uppercase_letters + digits + special_characters
+        all_characters = (
+            lowercase_letters + uppercase_letters + digits + special_characters
+        )
 
         # Ensure the password contains at least one character from each category
         password = [
             secrets.choice(lowercase_letters),
             secrets.choice(uppercase_letters),
             secrets.choice(digits),
-            secrets.choice(special_characters)
+            secrets.choice(special_characters),
         ]
 
         # Fill the rest of the password with random characters from the combined set
@@ -111,7 +113,7 @@ class EcssHelper:
         secrets.SystemRandom().shuffle(password)
 
         # Convert the list of characters into a string
-        return ''.join(password)
+        return "".join(password)
 
     @staticmethod
     def __check_password_security(password: str) -> bool:
@@ -159,7 +161,10 @@ class EcssHelper:
 
     def create_account(self, user_data: dict[str, str | int | list[str]]) -> dict:
         if not self.__check_number(user_data.get("number")):
-            return False
+            return {
+                "status": False,
+                "password": None,
+            }
         # if not self.__check_password_security(user_data.get("password")):
         #     return False
         sip_password = self.__generate_password()
@@ -187,7 +192,9 @@ class EcssHelper:
         #     return sip_password
         return {
             "status": False if response.status_code not in STATUS_CODES else True,
-            "password": None if response.status_code not in STATUS_CODES else sip_password
+            "password": None
+            if response.status_code not in STATUS_CODES
+            else sip_password,
         }
         # return False if response.status_code not in STATUS_CODES else True
 
