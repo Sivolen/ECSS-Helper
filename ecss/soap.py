@@ -85,17 +85,18 @@ class EcssHelper:
 
     @staticmethod
     def __generate_password():
+        # Define the minimum length of the password
         min_length = 12
-        # Определяем наборы символов
+        # Define character sets
         lowercase_letters = string.ascii_lowercase
         uppercase_letters = string.ascii_uppercase
         digits = string.digits
         special_characters = "!@#$%_"
 
-        # Объединяем все символы
+        # Combine all character sets into one
         all_characters = lowercase_letters + uppercase_letters + digits + special_characters
 
-        # Гарантируем, что в пароле будет хотя бы один символ из каждой категории
+        # Ensure the password contains at least one character from each category
         password = [
             secrets.choice(lowercase_letters),
             secrets.choice(uppercase_letters),
@@ -103,13 +104,13 @@ class EcssHelper:
             secrets.choice(special_characters)
         ]
 
-        # Дополняем пароль до минимальной длины
+        # Fill the rest of the password with random characters from the combined set
         password += [secrets.choice(all_characters) for _ in range(min_length - 4)]
 
-        # Перемешиваем символы, чтобы порядок был случайным
+        # Shuffle the characters to ensure randomness in the order
         secrets.SystemRandom().shuffle(password)
 
-        # Преобразуем список в строку
+        # Convert the list of characters into a string
         return ''.join(password)
 
     @staticmethod
