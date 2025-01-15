@@ -1,6 +1,9 @@
 #!venv/bin/python3
 import re
 import requests
+import secrets
+import string
+
 from requests.cookies import cookiejar_from_dict
 
 from urllib3 import exceptions, disable_warnings
@@ -81,6 +84,35 @@ class EcssHelper:
         self.pusher.timeout = 3
 
     @staticmethod
+    def __generate_password():
+        min_length = 12
+        # Определяем наборы символов
+        lowercase_letters = string.ascii_lowercase
+        uppercase_letters = string.ascii_uppercase
+        digits = string.digits
+        special_characters = "!@#$%_"
+
+        # Объединяем все символы
+        all_characters = lowercase_letters + uppercase_letters + digits + special_characters
+
+        # Гарантируем, что в пароле будет хотя бы один символ из каждой категории
+        password = [
+            secrets.choice(lowercase_letters),
+            secrets.choice(uppercase_letters),
+            secrets.choice(digits),
+            secrets.choice(special_characters)
+        ]
+
+        # Дополняем пароль до минимальной длины
+        password += [secrets.choice(all_characters) for _ in range(min_length - 4)]
+
+        # Перемешиваем символы, чтобы порядок был случайным
+        secrets.SystemRandom().shuffle(password)
+
+        # Преобразуем список в строку
+        return ''.join(password)
+
+    @staticmethod
     def __check_password_security(password: str) -> bool:
         pattern = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%_])[a-zA-Z\d!@#$%^&*()_+}{:?><]{8,}$"
         return True if re.findall(pattern, password) else False
@@ -124,11 +156,12 @@ class EcssHelper:
         response = self.__post_data(url=URL_SIP_SET, request=XML_SIP_SET)
         return True if response.status_code in STATUS_CODES else False
 
-    def create_account(self, user_data: dict[str, str | int | list[str]]) -> bool:
+    def create_account(self, user_data: dict[str, str | int | list[str]]) -> dict:
         if not self.__check_number(user_data.get("number")):
             return False
-        if not self.__check_password_security(user_data.get("password")):
-            return False
+        # if not self.__check_password_security(user_data.get("password")):
+        #     return False
+        sip_password = self.__generate_password()
         URL_DECLARE: str = (
             f"https://{self.api_url}:{self.api_port}/commands/sip_user_declare"
         )
@@ -142,11 +175,20 @@ class EcssHelper:
             f'address="alias-as-user" '
             f'auth_qop="no" '
             f'login="{user_data.get("number")}" '
-            f'password="{user_data.get("password")}"/>'
+            # f'password="{user_data.get("password")}"/>'
+            f'password="{sip_password}"/>'
             "</in>"
         )
         response = self.__post_data(url=URL_DECLARE, request=XML_CREATE_USER)
-        return False if response.status_code not in STATUS_CODES else True
+        # if response.status_code not in STATUS_CODES:
+        #     return False
+        # else:
+        #     return sip_password
+        return {
+            "status": False if response.status_code not in STATUS_CODES else True,
+            "password": None if response.status_code not in STATUS_CODES else sip_password
+        }
+        # return False if response.status_code not in STATUS_CODES else True
 
     def process(
         self, username: str, password: str, user_data: dict, api_url: str, api_port: int

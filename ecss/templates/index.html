@@ -16,9 +16,9 @@
         <div class="card bg-light mb-3" style="max-width: 18rem;">
           <div class="card-header">File example</div>
             <div class="card-body">
-                <h5 class="card-title">number,password,name</h5>
-                <p class="card-text">67173,@Testpassw0rd,CRCT Test T.T.</p>
-                <p class="card-text">67174,_Testpassw0rd,MinGOS Test1 T.T.</p>
+                <h5 class="card-title">number,name</h5>
+                <p class="card-text">67173,CRCT Test T.T.</p>
+                <p class="card-text">67174,MinGOS Test1 T.T.</p>
             </div>
         </div>
     </form>
@@ -33,16 +33,17 @@
                 <th scope="col">Encoding</th>
                 <th scope="col">License</th>
                 <th scope="col">Profile</th>
+                <th scope="col">Password</th>
             </tr>
         </thead>
         <tbody>
         {% for i in result %}
         <tr>
             <th scope="row">{{ i }}</th>
-            {% if result[i]["creating_status"] == "True" %}
-                <td>{{ result[i]["creating_status"] }}</td>
+            {% if not result[i]["creating_status"]["status"] %}
+                <td class="table-danger">{{ result[i]["creating_status"]["status"]  }}</td>
             {% else %}
-            <td class="table-danger">{{ result[i]["creating_status"] }}</td>
+                <td>{{ result[i]["creating_status"]["status"]  }}</td>
             {% endif %}
             <td>{{ result[i]["change_my_from"] }}</td>
             <td>{{ result[i]["change_name"] }}</td>
@@ -53,6 +54,7 @@
                 {% endfor %}
             </td>
             <td>{{ result[i]["activate_profile"] }}</td>
+            <td>{{ result[i]["creating_status"]["password"] }}</td>
         </tr>
         {% endfor %}
         </tbody>

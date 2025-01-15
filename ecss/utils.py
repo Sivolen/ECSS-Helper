@@ -19,7 +19,7 @@ from settings import (
 
 def create_sip_user(
     number,
-    password,
+    # password,
     display_name,
 ):
     server_data = {
@@ -28,7 +28,7 @@ def create_sip_user(
         "context": DEFAULT_CONTEXT,
         "group": DEFAULT_GROUP,
         "number": number,
-        "password": password,
+        # "password": password,
         "display_name": display_name,
         "encoding": ENCODING,
         "license_list": LICENSE_LIST,
@@ -71,13 +71,13 @@ def process(file: list[str]):
         return results
     for n, line in enumerate(file, start=1):
         line = line.split(",")
-        if len(line) < 3:
+        if len(line) < 2:
             continue
         else:
             result = create_sip_user(
                 number=line[0].strip(),
-                password=line[1].strip(),
-                display_name=line[2].strip(),
+                # password=line[1].strip(),
+                display_name=line[1].strip(),
             )
             results.update(
                 {
